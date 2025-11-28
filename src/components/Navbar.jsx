@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
+import Logout from "./Logout";
 
 function Navbar({ expanded, setExpanded }) {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -20,7 +21,7 @@ function Navbar({ expanded, setExpanded }) {
   return (
     <aside
       className={`
-        h-screen bg-white shadow-md p-6 z-40 fixed top-0 left-0
+        h-screen bg-primary-400 shadow-md p-6 z-40 fixed top-0 left-0
         transition-all duration-300 flex flex-col
         ${expanded ? "w-64" : "w-22"}
       `}
@@ -47,7 +48,7 @@ function Navbar({ expanded, setExpanded }) {
       </h2> */}
 
       <nav>
-        <ul className="space-y-4 text-slate-950">
+        <ul className="space-y-4 text-slate-900">
           {[
             { to: "/dashboard", icon: House, label: "Dashboard" },
             // { to: "/VisualizarImagens", icon: ImagePlus, label: "Visualizar imagens" },
@@ -85,7 +86,7 @@ function Navbar({ expanded, setExpanded }) {
   `}
 >
   <div
-    className={`flex items-center transition-all duration-300
+    className={`flex items-center transition-all duration-300 
       ${expanded ? "gap-3 w-full justify-start" : "justify-center"}
     `}
     style={{ minHeight: "60px" }} 
@@ -106,9 +107,10 @@ function Navbar({ expanded, setExpanded }) {
 
     {/* Dados apenas no modo expandido */}
     {expanded && (
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-around gap-2">
         <p className="font-semibold">{usuario.nome}</p>
         <p className="text-sm text-slate-600">{usuario.email}</p>
+        <Logout />
       </div>
     )}
   </div>

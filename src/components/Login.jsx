@@ -70,7 +70,7 @@ export default function Login() {
 
         {/* FORMULÁRIO */}
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+          <h2 className="text-2xl font-bold mb-6 text-center text-slate-900">
             Acesse sua conta
           </h2>
 
@@ -116,7 +116,7 @@ export default function Login() {
             )}
 
             <button
-              className="text-center bg-green-600 text-white rounded-lg p-2 mt-2 hover:bg-green-700 transition-all"
+              className="text-center bg-primary-600 text-white rounded-lg p-2 mt-2 hover:bg-primary-700 transition-all cursor-pointer"
               type="submit"
             >
               Entrar
@@ -125,13 +125,18 @@ export default function Login() {
         </div>
 
         {/* ILUSTRAÇÃO */}
-        <div className="hidden md:flex w-1/2 bg-green-600 items-center justify-center text-white flex-col p-8">
+        <div className="hidden md:flex w-1/2 bg-primary-400 items-center justify-center text-slate-900 flex-col p-8">
           <h2 className="text-3xl font-bold mb-4">Bem-vindo!</h2>
-          <p className="text-center text-blue-100">
+          <p className="text-center ">
             Acesse o sistema com suas credenciais.
           </p>
         </div>
       </div>
+
+
+
+  
+
     </div>
   );
 }

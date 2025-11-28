@@ -6,7 +6,9 @@ import CadastroPacientes from "./pages/CadastroPacientes";
 import VisualizarImagens from "./pages/VisualizarImagens";
 import GerarLaudo from "./pages/GerarLaudo";
 import Configuracoes from "./pages/Configuracoes";
-import HistoricoLaudos from "./pages/HistoricoLaudos"
+import HistoricoLaudos from "./pages/HistoricoLaudos";
+
+import "./index.css";
 
 
 function App() {

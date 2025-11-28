@@ -16,7 +16,7 @@ export default function Dashboard({ expanded }) {
   });
 
   // Modal de confirmação
-  const [confirmarSaida, setConfirmarSaida] = useState(false);
+ // const [confirmarSaida, setConfirmarSaida] = useState(false);
 
   // 🔵 Buscar usuários quando abrir a página
   useEffect(() => {
@@ -102,12 +102,12 @@ export default function Dashboard({ expanded }) {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Dashboard</h1>
 
-          <button
+          {/* <button
             onClick={() => setConfirmarSaida(true)}
             className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
           >
             <LogOut size={20} /> Sair
-          </button>
+          </button> */}
         </div>
 
         {/* CARDS */}
@@ -203,7 +203,7 @@ export default function Dashboard({ expanded }) {
       </main>
 
       {/* MODAL SAIR */}
-      {confirmarSaida && (
+      {/* {confirmarSaida && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
           <div className="bg-white p-6 rounded shadow-lg">
             <p className="text-lg font-semibold mb-4">
@@ -230,7 +230,7 @@ export default function Dashboard({ expanded }) {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
@@ -265,7 +265,7 @@ function Td({ children }) {
   return <td className="px-3 py-2">{children}</td>;
 }
 
-
+//
 
 // import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
