@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Layout from "../components/Navbar";
 
 export default function LogsAuditoria() {
   const [logs, setLogs] = useState([]);
@@ -7,15 +7,20 @@ export default function LogsAuditoria() {
   const [filtro, setFiltro] = useState("");
 
   useEffect(() => {
-    const dados = JSON.parse(localStorage.getItem("logsAuditoria")) || [];
-    setLogs(dados);
+    async function carregarLogs() {
+      const resposta = await fetch("http://localhost:3000/logsAuditoria");
+      const dados = await resposta.json();
+      setLogs(dados);
+    }
+
+    carregarLogs();
   }, []);
 
   const logsFiltrados = logs.filter((log) => {
     const texto = pesquisa.toLowerCase();
     const correspondePesquisa =
-      log.usuario.toLowerCase().includes(texto) ||
-      log.acao.toLowerCase().includes(texto);
+      log.usuario?.toLowerCase().includes(texto) ||
+      log.acao?.toLowerCase().includes(texto);
 
     const correspondeFiltro = filtro ? log.tipo === filtro : true;
 
@@ -23,25 +28,26 @@ export default function LogsAuditoria() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
+    <Layout>
+      <div className="max-w-6xl mx-auto px-6 py-10">
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">
+          Logs de Auditoria
+        </h1>
 
-      <div className="pt-24 p-6 max-w-6xl mx-auto">
-        <h1 className="text-2xl font-semibold mb-6">Logs de Auditoria</h1>
-
-        <div className="flex flex-wrap gap-4 mb-6">
+        {/* filtros */}
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
           <input
             type="text"
-            placeholder="Pesquisar por usuário ou ação..."
+            placeholder="Pesquisar usuário ou ação..."
             value={pesquisa}
             onChange={(e) => setPesquisa(e.target.value)}
-            className="border p-2 rounded w-full md:w-1/2"
+            className="border border-gray-300 p-3 rounded-lg shadow-sm w-full focus:ring-2 focus:ring-blue-500 outline-none"
           />
 
           <select
             value={filtro}
             onChange={(e) => setFiltro(e.target.value)}
-            className="border p-2 rounded w-48"
+            className="border border-gray-300 p-3 rounded-lg shadow-sm w-full md:w-60 focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="">Todos os tipos</option>
             <option value="LOGIN">Login</option>
@@ -52,38 +58,45 @@ export default function LogsAuditoria() {
           </select>
         </div>
 
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-200">
+        {/* tabela */}
+        <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+          <table className="w-full text-left">
+            <thead className="bg-gray-100 text-gray-700">
               <tr>
-                <th className="p-3 text-left">Usuário</th>
-                <th className="p-3 text-left">Ação</th>
-                <th className="p-3 text-left">Tipo</th>
-                <th className="p-3 text-left">Data</th>
-                <th className="p-3 text-left">IP</th>
+                <th className="p-4">Usuário</th>
+                <th className="p-4">Ação</th>
+                <th className="p-4">Tipo</th>
+                <th className="p-4">Data</th>
+                <th className="p-4">IP</th>
               </tr>
             </thead>
 
             <tbody>
               {logsFiltrados.length === 0 ? (
                 <tr>
-                  <td className="p-4 text-center text-gray-500" colSpan="5">
+                  <td className="p-6 text-center text-gray-500" colSpan="5">
                     Nenhum log encontrado.
                   </td>
                 </tr>
               ) : (
-                logsFiltrados.map((log, index) => (
+                logsFiltrados.map((log) => (
                   <tr
-                    key={index}
+                    key={log.id}
                     className="border-t hover:bg-gray-50 transition"
                   >
-                    <td className="p-3">{log.usuario}</td>
-                    <td className="p-3">{log.acao}</td>
-                    <td className="p-3">{log.tipo}</td>
-                    <td className="p-3">
+                    <td className="p-4 font-medium text-gray-700">
+                      {log.usuario}
+                    </td>
+                    <td className="p-4 text-gray-700">{log.acao}</td>
+                    <td className="p-4">
+                      <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                        {log.tipo}
+                      </span>
+                    </td>
+                    <td className="p-4 text-gray-600">
                       {new Date(log.data).toLocaleString("pt-BR")}
                     </td>
-                    <td className="p-3">{log.ip}</td>
+                    <td className="p-4 text-gray-600">{log.ip}</td>
                   </tr>
                 ))
               )}
@@ -91,6 +104,6 @@ export default function LogsAuditoria() {
           </table>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
