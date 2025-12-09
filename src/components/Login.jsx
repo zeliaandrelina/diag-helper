@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// 💡 IMPORTAÇÃO DO MÓDULO DE DADOS
+//IMPORTAÇÃO DO MÓDULO DE DADOS
 import { carregarUsuarios } from "../data/dadosUsuarios";
 // import { salvarLog } from "../modals/salvaLogs"; // Manter se for usar
 
@@ -24,7 +24,7 @@ export default function Login() {
     e.preventDefault();
     setMensagem("");
 
-    // 1. 🔍 CARREGA TODOS OS USUÁRIOS DO 'BANCO DE DADOS FAKE'
+    // CARREGA TODOS OS USUÁRIOS DO 'BANCO DE DADOS FAKE'
     const todosUsuarios = carregarUsuarios();
 
     const usuario = todosUsuarios.find(
@@ -39,7 +39,7 @@ export default function Login() {
       return;
     }
 
-    // 2. ✅ SALVA INFORMAÇÕES DO USUÁRIO NO localStorage
+    //SALVA INFORMAÇÕES DO USUÁRIO NO localStorage
     localStorage.setItem(
       "usuario",
       JSON.stringify({
@@ -108,6 +108,12 @@ export default function Login() {
               type="submit"
             >
               Entrar
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/suporte")}
+              className="text-blue-600 hover:underline mt-3 text-center">
+              Esqueci minha senha / Falar com o suporte
             </button>
 
           </form>
