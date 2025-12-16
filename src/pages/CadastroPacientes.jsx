@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
 import NovoExame from "../modals/NovoExame";
+import ModalConfirmarExclusao from "../modals/ModalConfirmarExclusao";
+import PageWrapper from "../components/PageWrapper";
 
 function CadastroPacientes() {
   const [pacientes, setPacientes] = useState([]);
   const [editId, setEditId] = useState(null);
   const [pesquisa, setPesquisa] = useState("");
+  const [openModal, setOpenModal] = useState(false); //confirmar exclusão do paciente
+  const [idSelecionado, setIdSelecionado] = useState(null);
+
 
   const [formPacientes, setFormPacientes] = useState({
     nome: "",
@@ -97,6 +101,13 @@ function CadastroPacientes() {
     }
   };
 
+  // confirmar exclusão do paciente
+  const confirmarExclusao = async () => {
+    await excluirPaciente(idSelecionado);
+    setOpenModal(false);
+    setIdSelecionado(null);
+  }
+
   // Cadastrar paciente com exames
   const cadastrarPaciente = async (e) => {
     e.preventDefault();
@@ -185,11 +196,11 @@ function CadastroPacientes() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      <Navbar />
+  <PageWrapper title="Cadastro pacientes">
+
+    
 
       <main className={`flex-1 p-8 ${modalExameAberto ? "blur-sm" : ""}`}>
-        <h1 className="text-2xl font-bold mb-6">Cadastro de Pacientes</h1>
 
         {/* Campo de pesquisa */}
         <div className="mb-4">
@@ -354,7 +365,11 @@ function CadastroPacientes() {
                   </button>
 
                   <button
-                    onClick={() => excluirPaciente(p.id)}
+                    onClick={() => {
+                      setIdSelecionado(p.id); //guarda o id do paciente
+                      setOpenModal(true);
+                    }
+                    }
                     className="text-red-600 font-semibold hover:underline"
                   >
                     Excluir
@@ -391,6 +406,12 @@ function CadastroPacientes() {
         </div>
       </main>
 
+      {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO */}
+          <ModalConfirmarExclusao
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            onConfirm={confirmarExclusao}
+          />
 
       {/* MODAL */}
       {modalExameAberto && (
@@ -451,7 +472,9 @@ function CadastroPacientes() {
         </div>
       )}
 
-    </div>
+    
+
+    </PageWrapper>
   );
 }
 
