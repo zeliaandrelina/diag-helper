@@ -16,7 +16,6 @@ export default function Dashboard() {
     <PageWrapper title="Dashboard">
       {/* GRÁFICO DE PIZZA */}
       <div className="bg-white p-4 shadow rounded">
-        <h2 className="text-4xl font-bold mb-4 text-center text-gray-800">Dashboard</h2>
         <DashboardChart usuarios={usuarios} />
       </div>
     </PageWrapper>
