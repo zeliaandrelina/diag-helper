@@ -6,10 +6,12 @@ import PageWrapper from "../components/PageWrapper";
 // Importações para Auditoria
 import InputCPF from "../components/InputCPF";
 import InputTelefone from "../components/InputTelefone";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
 export default function CadastroPacientes() {
+  const { usuario: usuarioLogado } = useAuth();
   const [pacientes, setPacientes] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
   const [pesquisaDebounced, setPesquisaDebounced] = useState("");
@@ -91,10 +93,9 @@ export default function CadastroPacientes() {
 
         // Registra log apenas se houver mudanças reais
         if (alteracoes.length > 0) {
-          const usuarioLogado =
-            localStorage.getItem("usuarioNome") || "Usuário";
+          const nomeUsuario = usuarioLogado?.nome || "Usuário";
           await registrarLog(
-            usuarioLogado,
+            nomeUsuario,
             `Editou dados do paciente: ${form.nome}`,
             "EDIÇÃO",
             alteracoes.join(" | ")

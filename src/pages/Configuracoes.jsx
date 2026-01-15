@@ -2,12 +2,12 @@ import { useState } from "react";
 import { MdDeleteSweep, MdPerson, MdSave } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 
 export default function Configuracoes() {
   const navigate = useNavigate();
-
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const { usuario, login, logout } = useAuth();
 
   if (!usuario) {
     navigate("/");
@@ -39,19 +39,16 @@ export default function Configuracoes() {
     try {
       const usuarioAtualizado = await api.put(`/usuarios/${usuario.id}`, dadosAtualizados);
 
-      localStorage.setItem(
-        "usuario",
-        JSON.stringify({
-          ...usuario,
-          nome: usuarioAtualizado.nome,
-          email: usuarioAtualizado.email
-        })
-      );
+      login({
+        ...usuario,
+        nome: usuarioAtualizado.nome,
+        email: usuarioAtualizado.email
+      });
 
       alert("Alterações salvas com sucesso!");
 
       if (novaSenha) {
-        localStorage.removeItem("usuario");
+        logout();
         navigate("/");
       }
 
@@ -66,7 +63,7 @@ export default function Configuracoes() {
   /* ================= LIMPAR DADOS ================= */
   const limparTudo = () => {
     if (confirm("Deseja sair e limpar todos os dados?")) {
-      localStorage.clear();
+      logout();
       navigate("/");
     }
   };

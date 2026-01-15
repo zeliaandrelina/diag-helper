@@ -10,10 +10,12 @@ import ModalProcessando from "../modals/ModalProcessando";
 
 // --- IMPORTAÇÃO DO SERVIÇO DE AUDITORIA ---
 import { MdCheckCircle, MdClose, MdCloudUpload, MdDescription, MdPersonSearch } from "react-icons/md";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
 export default function GerarLaudo() {
+  const { usuario } = useAuth();
   const [pacientes, setPacientes] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
   const [pesquisaDebounced, setPesquisaDebounced] = useState("");
@@ -28,7 +30,7 @@ export default function GerarLaudo() {
   const [laudos, setLaudos] = useState([]);
 
   // Recupera o nome do usuário que está logado para o log
-  const usuarioLogado = localStorage.getItem("usuarioNome") || "Usuário Sistema";
+  const usuarioLogado = usuario?.nome || "Usuário Sistema";
 
   useEffect(() => {
     api

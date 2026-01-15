@@ -4,10 +4,12 @@ import BarraPesquisa from "../components/BarraPesquisa";
 import BotaoCadastrar from "../components/BotaoCadastrar";
 import InputCPF from "../components/InputCPF";
 import PageWrapper from "../components/PageWrapper";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import { registrarLog } from "../services/auditService";
 
 export default function CadastroUsuario() {
+  const { usuario: usuarioLogado } = useAuth();
   const [usuarios, setUsuarios] = useState([]);
   const [formAtivo, setFormAtivo] = useState(false);
   const [editId, setEditId] = useState(null);
@@ -90,7 +92,7 @@ export default function CadastroUsuario() {
         });
 
         // Registro do Log com os Detalhes das mudanças
-        const responsavel = localStorage.getItem('usuarioNome') || 'Admin';
+        const responsavel = usuarioLogado?.nome || 'Admin';
         const detalhesTexto = alteracoes.length > 0 ? alteracoes.join(" | ") : "Nenhuma alteração detectada";
 
         await registrarLog(responsavel, `Editou usuário: ${form.nome}`, "EDIÇÃO", detalhesTexto);
@@ -108,7 +110,7 @@ export default function CadastroUsuario() {
         });
         setUsuarios((prev) => [...prev, res]);
 
-        const responsavel = localStorage.getItem('usuarioNome') || 'Admin';
+        const responsavel = usuarioLogado?.nome || 'Admin';
         await registrarLog(responsavel, `Cadastrou novo usuário: ${form.nome}`, "CADASTRO");
       }
       resetForm();
@@ -133,7 +135,7 @@ export default function CadastroUsuario() {
         await api.delete(`/usuarios/${id}`);
         setUsuarios((prev) => prev.filter((u) => u.id !== id));
 
-        const responsavel = localStorage.getItem('usuarioNome') || 'Admin';
+        const responsavel = usuarioLogado?.nome || 'Admin';
         await registrarLog(responsavel, `Excluiu usuário: ${usuarioRemovido?.nome}`, "EXCLUSÃO");
       } catch (err) {
         alert("Erro ao remover usuário.");

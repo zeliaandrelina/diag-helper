@@ -1,10 +1,8 @@
 import api from "../services/api";
 
-export function salvaLogs(acao, tipo = "GERAL") {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-
+export function salvaLogs(acao, tipo = "GERAL", usuarioNome = "Desconhecido") {
   const log = {
-    usuario: usuario?.nome || "Desconhecido",
+    usuario: usuarioNome,
     acao: acao,
     tipo: tipo,
     data: new Date().toISOString(),
